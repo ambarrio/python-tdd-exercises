@@ -1,9 +1,8 @@
-
 def reverse_list(l):
     """
     Reverses order of elements in list l.
     """
-    return None
+    return list(reversed(l))
 
 
 def test_reverse_list():
@@ -16,7 +15,7 @@ def reverse_string(s):
     """
     Reverses order of characters in string s.
     """
-    return None
+    return "".join(reversed(list(s)))
 
 
 def test_reverse_string():
@@ -30,8 +29,8 @@ def is_english_vowel(c):
     Returns True if c is an english vowel
     and False otherwise.
     """
-    return None
-
+    # y was included in the vowel set guided by the tests.
+    return c in 'aeiouyAEIOUY'
 
 def test_is_english_vowel():
     assert is_english_vowel('a')
@@ -57,7 +56,7 @@ def count_num_vowels(s):
     """
     Returns the number of vowels in a string s.
     """
-    return None
+    return len(filter(lambda si: is_english_vowel(si), list(s)))
 
 
 def test_count_num_vowels():
@@ -79,7 +78,7 @@ def histogram(l):
     """
     Converts a list of integers into a simple string histogram.
     """
-    return None
+    return "\n".join(map(lambda ls: "#"*ls, l))
 
 
 def test_histogram():
@@ -93,7 +92,7 @@ def get_word_lengths(s):
     Returns a list of integers representing
     the word lengths in string s.
     """
-    return None
+    return map(lambda si:len(si), s.split())
 
 
 def test_get_word_lengths():
@@ -108,7 +107,7 @@ def find_longest_word(s):
     Returns the longest word in string s.
     In case there are several, return the first.
     """
-    return None
+    return sorted(map(lambda si: (si, len(si)), s.split()), key=lambda item: item[1], reverse=True)[0][0]
 
 
 def test_find_longest_word():
@@ -125,7 +124,8 @@ def validate_dna(s):
     Return True if the DNA string only contains characters
     a, c, t, or g (lower or uppercase). False otherwise.
     """
-    return None
+    import re
+    return re.match("^[ctga]*$", s.lower()) is not None
 
 
 def test_validate_dna():
@@ -141,8 +141,8 @@ def base_pair(c):
     of the base pair. If the base is not recognized,
     return 'unknown'.
     """
-    return None
-
+    dna_complement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
+    return dna_complement[c.upper()].lower() if c.upper() in dna_complement else 'unknown'
 
 def test_base_pair():
     assert base_pair('a') == 't'
@@ -164,7 +164,9 @@ def transcribe_dna_to_rna(s):
     Return string s with each letter T replaced by U.
     Result is always uppercase.
     """
-    return None
+    rna_code = {'A': 'A', 'C': 'C', 'G': 'G', 'T': 'U', '':''}
+    # Treat unknowns
+    return ''.join(filter(None, [ rna_code[c.upper()] if c.upper() in rna_code else '' for c in s ] ))
 
 
 def test_transcribe_dna_to_rna():
@@ -179,7 +181,8 @@ def get_complement(s):
     Return the DNA complement in uppercase
     (A -> T, T-> A, C -> G, G-> C).
     """
-    return None
+    dna_complement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
+    return ''.join(filter(None, [ dna_complement[c.upper()] if c.upper() in dna_complement else '' for c in s ] ))
 
 
 def test_get_complement():
@@ -194,7 +197,8 @@ def get_reverse_complement(s):
     Return the reverse complement of string s
     (complement reversed in order).
     """
-    return None
+    dna_complement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
+    return ''.join(filter(None, reversed([ dna_complement[c.upper()] if c.upper() in dna_complement else '' for c in s ])))
 
 
 def test_get_reverse_complement():
@@ -208,7 +212,7 @@ def remove_substring(substring, string):
     """
     Returns string with all occurrences of substring removed.
     """
-    return None
+    return string.replace(substring, '')
 
 
 def test_remove_substring():
@@ -226,7 +230,8 @@ def get_position_indices(triplet, dna):
     in a DNA sequence. We start counting from 0
     and jump by 3 characters from one position to the next.
     """
-    return None
+    import re
+    return filter(None, [m.start() / 3 if m.start() is not m.start() % 3 else '' for m in re.finditer(triplet, dna)])
 
 
 def test_get_position_indices():
@@ -245,8 +250,20 @@ def get_3mer_usage_chart(s):
     The list is alphabetically sorted by the name
     of the 3-mer.
     """
-    return None
+    from operator import itemgetter
+    import collections
 
+    #ud = collections.defaultdict(int)
+    cnt = collections.Counter()
+
+    for idx in range(0, len(s), 1):
+        if (len(s) - idx >= 3):
+            #ud[s[idx:idx+3]] += 1
+            cnt[s[idx:idx+3]] += 1
+
+    #od = collections.OrderedDict(sorted(ud.items(), key=lambda t: t[0]))
+    #return [ (k, v) for k, v in od.iteritems() ]
+    return sorted(cnt.items(), key=itemgetter(0))
 
 def test_get_3mer_usage_chart():
     s = 'CCGGAAGAGCTTACTTAGGAAGAA'
@@ -276,7 +293,17 @@ def read_column(file_name, column_number):
     Reads column column_number from file file_name
     and returns the values as floats in a list.
     """
-    return None
+    flist = []
+    empty_lines = 0
+    fread = open(file_name,'r')
+    for line in fread:
+        chompedLine = line.rstrip()
+        if not chompedLine:
+            empty_lines += 1
+            continue
+        flist.append(float(chompedLine.split()[column_number-1]))
+
+    return flist
 
 
 def test_read_column():
@@ -315,7 +342,35 @@ def character_statistics(file_name):
     Use the isalpha() method to figure out
     whether the character is in the alphabet.
     """
-    return None
+    from operator import itemgetter
+    import collections
+    cnt = collections.Counter()
+
+    try:
+        fsock = open(file_name,'r')
+    except IOError:
+        print ("The file does not exist, exiting gracefully")
+
+    for line in fsock:
+        for c in line.rstrip().lower():
+            if c.isalpha():
+                cnt[c] += 1
+
+    lessAbundant = cnt.most_common()[len(cnt)-1][1]
+    #print(type(cnt.most_common()[len(cnt)-1]))
+    #print(lessAbundant)
+    #print (cnt.most_common()[-4:len(cnt)])
+    #print (sorted(cnt.items(), key=itemgetter(1))[0])
+    #print (cnt.most_common())
+
+    # list comprehension
+    #lessCommon = sorted([k for (k,v) in cnt.most_common() if v == lessAbundant])[0]
+    # tuple unpacking, filter and map
+    lessCommon = sorted(list(filter( lambda t: t[1] == lessAbundant, cnt.most_common())))[0][0]
+    #lessCommon = map( lambda (keyLetter,_): keyLetter, filter( lambda (_,freqVal): freqVal == lessAbundant, cnt.most_common()) )
+    #print(lessCommon)
+
+    return (cnt.most_common()[0][0], lessCommon)
 
 
 def test_character_statistics():
