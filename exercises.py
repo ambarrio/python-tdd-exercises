@@ -448,4 +448,18 @@ def pythagorean_triples(n):
 # ------------------------------------------------------------------------------
 
 def test_pythagorean_triples():
-    pass  # so far we do not test anything, check also test coverage
+    #pass  # so far we do not test anything, check also test coverage
+    # How to assert for parameters?
+    assert (len(pythagorean_triples(10)) == 2)
+    assert (len(pythagorean_triples(20)) == 6)
+    assert (len(pythagorean_triples(50)) == 20)
+    assert (len(pythagorean_triples(100)) == 52)
+    result = []
+    result.append((3, 4, 5))
+    result.append((6, 8, 10))
+    assert pythagorean_triples(10) == result
+    result.append((5, 12, 13))
+    result.append((9, 12, 15))
+    result.append((8, 15, 17))
+    result.append((12, 16, 20))
+    assert pythagorean_triples(20) == result
