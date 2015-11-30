@@ -3,7 +3,7 @@
 ## Make these badges green
 
 [![Build Status](https://travis-ci.org/ambarrio/python-tdd-exercises.svg?branch=master)](https://travis-ci.org/ambarrio/python-tdd-exercises/builds)
-[![Coverage Status](https://coveralls.io/repos/ambarrio/python-tdd-exercises/badge.png?branch=master)](https://coveralls.io/r/ambarrio/python-tdd-exercises?branch=master)
+[![Coverage Status](https://coveralls.io/repos/ambarrio/python-tdd-exercises/badge.svg?branch=master)](https://coveralls.io/github/ambarrio/python-tdd-exercises?branch=master)
 
 After you fork, edit this `README.md` and rename "ambarrio" to your GitHub username
 or namespace to make the badges point to your fork.
