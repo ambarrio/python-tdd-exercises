@@ -56,7 +56,7 @@ def count_num_vowels(s):
     """
     Returns the number of vowels in a string s.
     """
-    return len(filter(lambda si: is_english_vowel(si), list(s)))
+    return len(list(filter(lambda si: is_english_vowel(si), list(s))))
 
 
 def test_count_num_vowels():
@@ -92,7 +92,7 @@ def get_word_lengths(s):
     Returns a list of integers representing
     the word lengths in string s.
     """
-    return map(lambda si:len(si), s.split())
+    return list(map(lambda si:len(si), s.split()))
 
 
 def test_get_word_lengths():
@@ -231,7 +231,7 @@ def get_position_indices(triplet, dna):
     and jump by 3 characters from one position to the next.
     """
     import re
-    return filter(None, [m.start() / 3 if m.start() is not m.start() % 3 else '' for m in re.finditer(triplet, dna)])
+    return list(filter(None, [m.start() / 3 if m.start() is not m.start() % 3 else '' for m in re.finditer(triplet, dna)]))
 
 
 def test_get_position_indices():
